@@ -15,6 +15,11 @@ from pytracking.evaluation.multi_object_wrapper import MultiObjectWrapper
 from pathlib import Path
 import torch
 
+from datetime import datetime
+
+now = datetime.now()
+date_string = now.strftime("%Y-%m-%d_%H_%M_%S")
+
 
 _tracker_disp_colors = {1: (0, 255, 0), 2: (0, 0, 255), 3: (255, 0, 0),
                         4: (255, 255, 255), 5: (0, 0, 0), 6: (0, 255, 128),
@@ -396,6 +401,7 @@ class Tracker:
 
         # Wait for initial bounding box if video!
         paused = videofilepath is not None
+        video_name=os.path.splitext(os.path.split(videofilepath)[1])[0]
 
         time_list = []
         with open(self.results_dir+'/'+video_name+'-'+str(update_rate)+'frameUpdate'+'_'+date_string+'.txt','w+') as tx:
