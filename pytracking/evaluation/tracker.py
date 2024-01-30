@@ -412,41 +412,25 @@ class Tracker:
                     frame_number += 1
                     if frame is None:
                         break
-                    # bboxes = list(out.items())[0][1][1]
-                    # conf = list(out.items())[1][1][1]
                     
                 if frame_number%update_rate == 0:
                     check_flag = True
                 else:
                     check_flag = False
 
-                if check_flag and frame_number!=0:
+                if check_flag:
                     # when there is no gtruth the tracker will be killed
                     if len(gt_bbox[frame_number])==0:
                         non_gt = True
 
                         next_object_id = 1
                         sequence_object_ids = []
-                        prev_output = OrderedDict()
-
-                        info = OrderedDict()
-
-                        info['object_ids'] = []
-                        info['init_object_ids'] = []
-                        info['init_bbox'] = OrderedDict()
-
+                        
                     else: 
                         non_gt = False
                         
                         next_object_id = 1
                         sequence_object_ids = []
-                        prev_output = OrderedDict()
-
-                        info = OrderedDict()
-
-                        info['object_ids'] = []
-                        info['init_object_ids'] = []
-                        info['init_bbox'] = OrderedDict()
                         
                         out = tracker.initialize(frame, {'init_bbox': OrderedDict({next_object_id: gt_bbox[frame_number]}),
                                                     'init_object_ids': [next_object_id, ],
@@ -463,20 +447,6 @@ class Tracker:
                 info = OrderedDict()
                 info['previous_output'] = prev_output
 
-                # if ui_control.new_init:
-                #     ui_control.new_init = False
-                #     init_state = ui_control.get_bb()
-
-                #     info['init_object_ids'] = [next_object_id, ]
-                #     info['init_bbox'] = OrderedDict({next_object_id: init_state})
-                #     sequence_object_ids.append(next_object_id)
-                #     if save_results:
-                #         output_boxes[next_object_id] = [init_state, ]
-                #     next_object_id += 1
-
-                # # Draw box
-                # if ui_control.mode == 'select':
-                #     cv.rectangle(frame_disp, ui_control.get_tl(), ui_control.get_br(), (255, 0, 0), 2)
 
                 if len(sequence_object_ids) > 0:
                     info['sequence_object_ids'] = sequence_object_ids
