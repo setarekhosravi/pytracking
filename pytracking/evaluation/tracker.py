@@ -542,17 +542,6 @@ class Tracker:
         cap.release()
         cv.destroyAllWindows()
 
-        if save_results:
-            if not os.path.exists(self.results_dir):
-                os.makedirs(self.results_dir)
-            video_name = "webcam" if videofilepath is None else Path(videofilepath).stem
-            base_results_path = os.path.join(self.results_dir, 'video_{}'.format(video_name))
-            print(f"Save results to: {base_results_path}")
-            for obj_id, bbox in output_boxes.items():
-                tracked_bb = np.array(bbox).astype(int)
-                bbox_file = '{}_{}.txt'.format(base_results_path, obj_id)
-                np.savetxt(bbox_file, tracked_bb, delimiter='\t', fmt='%d')
-
 
     def run_vot2020(self, debug=None, visdom_info=None):
         params = self.get_parameters()
